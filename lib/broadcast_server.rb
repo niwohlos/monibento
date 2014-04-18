@@ -17,6 +17,12 @@ class BroadcastServer < Server
         @clients.push connection
       end
 
+      if @clients.size.eql? 0
+        IO.select [ @server ]
+
+        next
+      end
+
       event = update block
 
       @clients.each do |client|
