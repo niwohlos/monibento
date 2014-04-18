@@ -1,9 +1,32 @@
 require 'socket'
 require 'json'
+require 'getoptlong'
 
+require_relative 'lib/log'
 require_relative 'lib/convenient_hash_access'
 
 server = TCPServer.open(3333)
+
+hostname = Socket.gethostname
+verbose = false
+
+opts = GetoptLong.new(
+    [ '--hostname', '-h', GetoptLong::REQUIRED_ARGUMENT],
+    [ '--verbose', '-v', GetoptLong::NO_ARGUMENT]
+)
+
+opts.each do |opt, arg|
+  case opt
+    when '--hostname'
+      hostname = arg
+    when '--verbose'
+      verbose = true
+  end
+end
+
+log = Log.new(verbose)
+
+log.info("monibento starting on host #{hostname}")
 
 loop do
   Thread.start(server.accept) do |client|
@@ -28,7 +51,7 @@ loop do
         data_old = data_new.dup unless data_new.nil?
         data_new = []
 
-        data = { host: Socket.gethostname, cpu: [], memory: {} }
+        data = { host: hostname, cpu: [], memory: {} }
 
         stat = File.read '/proc/stat'
         memstat = File.read '/proc/meminfo'
