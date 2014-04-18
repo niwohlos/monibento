@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>testclient</title>
+  <script>
+    var source = new EventSource("http://127.0.0.1:3333");
+    var pingHandler = function(e) {
+      var ping = JSON.parse(e.data);
+
+      document.getElementById("messages").innerHTML += "<li>" + JSON.stringify(ping) + "</li>\n";
+    };
+
+    source.addEventListener("ping", pingHandler, false);
+    source.addEventListener("resources", pingHandler, false);
+  </script>
+</head>
+<body>
+  <ul id="messages"></ul>
+</body>
+</html>
