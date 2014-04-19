@@ -1,4 +1,5 @@
 require 'socket'
+require 'stringio'
 
 class Server
   def initialize(port, sleep = 1)
