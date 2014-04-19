@@ -15,7 +15,7 @@ opts = GetoptLong.new(
     [ '--hostname', '-h', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--verbose', '-v', GetoptLong::NO_ARGUMENT ],
     [ '--origin', '-o', GetoptLong::REQUIRED_ARGUMENT ],
-    { '--port', '-p', GetoptLong::REQUIRED_ARGUMENT }
+    [ '--port', '-p', GetoptLong::REQUIRED_ARGUMENT ]
 )
 
 opts.each do |opt, arg|
