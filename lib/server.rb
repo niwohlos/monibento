@@ -2,9 +2,10 @@ require 'socket'
 require 'stringio'
 
 class Server
-  def initialize(port, sleep = 1)
+  def initialize(port, options)
     @port   = port
-    @sleep  = sleep
+    @sleep  = options[:sleep] || 1
+    @origin = options[:origin] || '*'
     @server = nil
   end
 
@@ -62,7 +63,7 @@ class Server
   def greet(client)
     client.puts('HTTP/1.1 200 OK')
     client.puts('Content-type: text/event-stream')
-    client.puts('Access-Control-Allow-Origin: *')
+    client.puts('Access-Control-Allow-Origin: ' + @origin)
     client.puts
     client.flush
   end
