@@ -18,7 +18,7 @@ class BroadcastServer < Server
       end
 
       if @clients.size.eql? 0
-        IO.select [ @server ]
+        IO.select [@server]
 
         next
       end
@@ -28,7 +28,7 @@ class BroadcastServer < Server
       @clients.each do |client|
         begin
           client.print event
-        rescue Errno::EPIPE
+        rescue Errno::EPIPE, Errno::ETIMEDOUT
           @clients.delete client
         end
       end
