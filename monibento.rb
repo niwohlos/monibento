@@ -9,11 +9,13 @@ require_relative 'lib/broadcast_server'
 hostname = Socket.gethostname
 verbose  = false
 origin = '*'
+port = 3333
 
 opts = GetoptLong.new(
     [ '--hostname', '-h', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--verbose', '-v', GetoptLong::NO_ARGUMENT ],
-    [ '--origin', '-o', GetoptLong::REQUIRED_ARGUMENT ]
+    [ '--origin', '-o', GetoptLong::REQUIRED_ARGUMENT ],
+    { '--port', '-p', GetoptLong::REQUIRED_ARGUMENT }
 )
 
 opts.each do |opt, arg|
@@ -24,6 +26,8 @@ opts.each do |opt, arg|
     verbose = true
   when '--origin'
     origin = arg
+  when '--port'
+    port = arg
   end
 end
 
@@ -32,7 +36,7 @@ log = Log.new(verbose)
 log.info("monibento starting on host #{hostname}")
 
 
-server = BroadcastServer.new(3334, origin: origin, sleep: 2)
+server = BroadcastServer.new(port, origin: origin)
 server.start Proc.new {
   @data_old = @data_new.dup unless @data_new.nil?
   @data_new = []
