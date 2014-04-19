@@ -3,12 +3,12 @@ require 'socket'
 class Server
   def initialize(port, sleep = 1)
     @port   = port
-    @sleep = sleep
+    @sleep  = sleep
     @server = nil
   end
 
   def start(block = self.method(:ping))
-    @server = TCPServer.new "127.0.0.1", @port
+    @server = TCPServer.new @port
 
     serve block
   end
@@ -39,7 +39,7 @@ class Server
       p connection
 
       if connection.nil?
-        IO.select [ @server ]
+        IO.select [@server]
 
         next
       end
@@ -59,11 +59,11 @@ class Server
   end
 
   def greet(client)
-      client.puts('HTTP/1.1 200 OK')
-      client.puts('Content-type: text/event-stream')
-      client.puts('Access-Control-Allow-Origin: *')
-      client.puts
-      client.flush
+    client.puts('HTTP/1.1 200 OK')
+    client.puts('Content-type: text/event-stream')
+    client.puts('Access-Control-Allow-Origin: *')
+    client.puts
+    client.flush
   end
 
   def update(block)
@@ -72,7 +72,7 @@ class Server
 
     block.call
 
-    buffer = $stdout
+    buffer  = $stdout
     $stdout = STDOUT
 
     buffer.rewind
