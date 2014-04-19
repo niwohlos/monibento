@@ -68,7 +68,6 @@ class Server
   end
 
   def update(block)
-    p Time.now
     $stdout = StringIO.new
 
     block.call
