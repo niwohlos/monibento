@@ -28,7 +28,7 @@ class BroadcastServer < Server
       @clients.each do |client|
         begin
           client.print event
-        rescue Errno::EPIPE, Errno::ETIMEDOUT
+        rescue Errno::EPIPE, Errno::ETIMEDOUT, Errno::EHOSTUNREACH
           @clients.delete client
         end
       end
